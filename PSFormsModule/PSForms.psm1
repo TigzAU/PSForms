@@ -23,6 +23,7 @@
 # 30/05/2017 - 1.2 - GJE -  Adding any location for buttons
 # 26/07/2017 - 1.3 - GJE -  Bug Fixes
 # 08/08/2017 - 1.4 - GJE -  Added "checked" option for check boxes to allow checked by default.
+# 10/08/2017 - 1.5 - GJE -  Added "showCheckBox" for date and time picker and added "checked" option.  Unchecked by default.
 #
 #
 # Cmdlets available				:	Version introduced	:	Last Modified
@@ -257,8 +258,13 @@ Function Add-FormButton {
     If this switch is added, the object will have a border added around.
 	
 .PARAMETER checked
-    This only applies to checkboxes and allows the checkbox to be checked when the form is opened.  For all other objects, this
-	setting is ignored.
+    This only applies to checkboxes and allows the checkbox to be checked when the form is opened.  For a date and time picker,
+	this can be used if the 'checked' switch has been applied.
+	For all other objects, this	setting is ignored.
+	
+.PARAMETER showCheckBox
+    This only applies to a date and time picker and will show the check box in the picker.  With this, the check box will enable
+	and disable the date picker section.  If this switch is used, the 'checked' switch can also be applied to the field.
 	
 .PARAMETER mandatory
     If this switch is added, the object will have a border added around.
@@ -374,6 +380,9 @@ Function Add-FormObject {
 		[switch]
 		$checked,
 		[parameter(Mandatory=$false)]
+		[switch]
+		$showCheckBox,
+		[parameter(Mandatory=$false)]
 		[string]
 		$objectGroup
 	)
@@ -403,6 +412,9 @@ Function Add-FormObject {
 			$object.Text = $CellText
 			$object.textAlign = "MiddleRight"
 			$EditableField = $true
+			If($checked){
+				$object.checked = $true
+			}
 		}
 		CheckedListBox {
 			$EditableField = $true
@@ -422,6 +434,15 @@ Function Add-FormObject {
 		DateTimePicker {
 			$object.Format = 'Short'
 			$EditableField = $true
+			If($showCheckBox){
+				$object.showCheckBox = $true
+				If($checked){
+					$object.checked = $true
+				}
+				Else{
+					$object.checked = $false
+				}
+			}
 		}
 		GroupBox {
 
@@ -460,12 +481,6 @@ Function Add-FormObject {
 	}
 
 # build up font style command
-	$fontStyle = $null
-#	If($bold){$fontStyle += [System.Drawing.FontStyle]::Bold}
-#	If($italic){$fontStyle += [System.Drawing.FontStyle]::Italic}
-#	If($underline){$fontStyle += [System.Drawing.FontStyle]::Underline}
-#	If(-not $fontStyle){$fontStyle = [System.Drawing.FontStyle]::Regular}
-
 	$value = 0
 	If($bold){$value += 1}
 	If($italic){$value += 2}
@@ -491,28 +506,22 @@ Function Add-FormObject {
 # Add settings for switch parameters
 	If($Hidden){$object.visible = $false}
 	If($disabled){$object.enabled = $false}
-	If($readOnly){$object.readOnly = $true}
+	If($objectType -ne "label"){
+		If($readOnly){$object.readOnly = $true}
+	}
 	If($textAlign){$object.textAlign = $textAlign}
 	If($border){$object.BorderStyle = [System.Windows.Forms.BorderStyle]::FixedSingle}
 
 	If($objectType -like "comboBox" -or $objectType -like "CheckedListBox"){
 		If($list){
-			ForEach($entry in $list){
-				$object.Items.Add($entry) | Out-Null
-			}
+			$object.Items.AddRange($list) | Out-Null
 		}
 		ElseIf($listFile){
-			ForEach($entry in Get-Content $listFile){
-				$object.Items.Add($entry) | Out-Null
-			}
+			$EntriesList = Get-Content $listFile
+			$object.Items.AddRange($EntriesList) | Out-Null
 		}
 	}
 
-	If($objectType -eq "checkBox"){
-		If($checked){
-			$object.checked = $true
-		}
-	}
 
 # Identify current row and column and compare to current highest values - used in form sizing
 	$CurrentRowCount = [int]$object.cellRow + [int]$object.rowHigh
@@ -861,7 +870,7 @@ Function Add-Row {
 		$FormObject.CurrentRow = $PreviousRow + $PreviousRowHigh
 		$FormObject.CurrentRowHigh = $rowsHigh
 	}
-	return $FormObject
+	return
 }
 
 <#

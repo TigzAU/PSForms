@@ -1,6 +1,10 @@
+Get-Module pSforms | Remove-Module
 
-Import-Module PSForms -MinimumVersion 1.2 -MaximumVersion 2.0
-#Import-Module C:\Users\garet\Source\Repos\PSForms\PSFormsModule\PSForms -MinimumVersion 1.2 -MaximumVersion 2.0
+#Import-Module PSForms -MinimumVersion 1.4 -MaximumVersion 2.0
+#Import-Module C:\Users\garet\Source\Repos\PSForms\PSFormsModule\PSForms -MinimumVersion 1.4 -MaximumVersion 2.0
+
+Import-Module C:\Users\garethj.edwards\Source\Repos\PSForms\PSFormsModule\PSForms -MinimumVersion 1.4 -MaximumVersion 2.0
+
 
 #region User Entered Variables
 # Set values used to create form
@@ -23,6 +27,10 @@ Import-Module PSForms -MinimumVersion 1.2 -MaximumVersion 2.0
 #endregion
 
 #region Form Functions
+function Test {
+	$txtSampleText24.Text = $cboSampleText23.text
+
+}
 
 Function chkSampleText28_CheckChanged {
     $datSampleText29.Visible = $chkSampleText28.Checked
@@ -119,57 +127,56 @@ $CustomerLogo = "/9j/4AAQSkZJRgABAQEASABIAAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAA
 	$lblMainFormTitle = Add-FormTitle -formObject $mainForm -titleText "Some Title Text" -titleFont Tahoma -bold
 
 #region Column 1
-	$MainForm = Add-Row -formObject $mainform -rowsHigh 1 -newColumn
+	Add-Row -formObject $mainform -rowsHigh 1 -newColumn
 	$lblSampleLabel11 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Label 11"
-	$MainForm = Add-Row $mainform 1
+	Add-Row $mainform 1
 	$lblSampleLabel12 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Label 12"
-	$MainForm = Add-Row $mainform 1
+	Add-Row $mainform 1
 	$lblSampleLabel13 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Label 13"
-	$MainForm = Add-Row $mainform 1
+	Add-Row $mainform 1
 	$lblSampleLabel14 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Label 14"
-	$MainForm = Add-Row $mainform 1
+	Add-Row $mainform 1
 	$lblSampleLabel15 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Label 15"
-	$MainForm = Add-Row $mainform 1
+	Add-Row $mainform 1
 	$lblSampleLabel17 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Label 17"
-	$MainForm = Add-Row $mainform 1
+	Add-Row $mainform 1
 	$lblSampleLabel18 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Check 18"
-	$MainForm = Add-Row $mainform 1
+	Add-Row $mainform 1
 	$lblSampleLabel19 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Date 19"
-	$MainForm = Add-Row $mainform 1
-	$lblSampleLabel110 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Panel Radio 19"
-	$MainForm = Add-Row $mainform 2
-	$MainForm = Add-Row $mainform 1
-	$lblSampleLabel111 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Checked List 20"
+	Add-Row $mainform 1
+	$lblSampleLabel20 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Date 20 with check"
+	Add-Row $mainform 1
+	$lblSampleLabel21 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Panel Radio 21"
+	Add-Row $mainform 2
+	Add-Row $mainform 1
+	$lblSampleLabel22 = Add-FormObject -formObject $mainForm -objectType Label -cellText "Checked List 22"
 #endregion Column 1
 
 #region Column 2
-#	$mainform = Add-Column -formObject $mainform
-	$MainForm = Add-Row -formObject $mainform 1 -newColumn
+	Add-Row -formObject $mainform 1 -newColumn
 	$txtSampleText21 = Add-FormObject -formObject $mainForm -objectType TextBox
-	$MainForm = Add-Row -formObject $mainform 1
+	Add-Row -formObject $mainform 1
 	$txtSampleText22L = Add-FormObject -formObject $mainForm -objectType TextBox -cellSize "HalfLeft"
 	$txtSampleText22R = Add-FormObject -formObject $mainForm -objectType TextBox -cellSize "HalfRight"
-	$MainForm = Add-Row -formObject $mainform 1
-	$cboSampleText23 = Add-FormObject -formObject $mainForm -objectType ComboBox #-List $cboSampleText23_List
-	ForEach($entry in $cboSampleText23_List){
-		$cboSampleText23.Items.Add($entry)
-	}
+	Add-Row -formObject $mainform 1
+	$cboSampleText23 = Add-FormObject -formObject $mainForm -objectType ComboBox -List $cboSampleText23_List
 		$cboSampleText23.add_LostFocus({Test})
-write-host $cboSampleText23
-	$MainForm = Add-Row -formObject $mainform 1
+	Add-Row -formObject $mainform 1
 	$txtSampleText24 = Add-FormObject -formObject $mainForm -objectType TextBox
-	$MainForm = Add-Row -formObject $mainform 1
+	Add-Row -formObject $mainform 1
 	$rtbSampleText25 = Add-FormObject -formObject $mainForm -objectType RichTextBox
-	$MainForm = Add-Row -formObject $mainform 1
+	Add-Row -formObject $mainform 1
 	$nudSampleText27 = Add-FormObject -formObject $mainForm -objectType NumericUpDown
-	$MainForm = Add-Row -formObject $mainform 1
+	Add-Row -formObject $mainform 1
 	$chkSampleText28 = Add-FormObject -formObject $mainForm -objectType CheckBox -cellText "Select box to show date picker"
 		$chkSampleText28.add_CheckedChanged({chkSampleText28_CheckChanged})
-	$MainForm = Add-Row -formObject $mainform 1
+	Add-Row -formObject $mainform 1
 	$datSampleText29 = Add-FormObject -formObject $mainForm -objectType DateTimePicker -hidden
-	$MainForm = Add-Row -formObject $mainform 3
+	Add-Row -formObject $mainform 1
+	$datSampleText1 = Add-FormObject -formObject $mainForm -objectType DateTimePicker -showCheckBox -checked
+	Add-Row -formObject $mainform 3
 	$panSampleText211 = Add-FormObject -formObject $mainForm -objectType Panel -border
-	$MainForm = Add-Row -formObject $mainform 3
+	Add-Row -formObject $mainform 3
 	$cklSampleText212 = Add-FormObject -formObject $mainForm -objectType CheckedListBox -List $cboSampleText23_List
 	
 
@@ -192,18 +199,18 @@ write-host $cboSampleText23
 	
 #region Column 3
 #	$mainform = Add-Column $mainform
-	$MainForm = Add-Row $mainform 1 -newColumn
+	Add-Row $mainform 1 -newColumn
 	$lblLabel3 = Add-FormObject -formObject $mainForm -objectType Label -border
-	$MainForm = Add-Row $mainform 1
+	Add-Row $mainform 1
 	$btnTest1 = Add-FormButton -FormObject $MainForm -buttonText "Test" -buttonSize "Full"
 
 #endregion column 3
 
 #region Column 4
 #	$mainform = Add-Column $mainform
-	$MainForm = Add-Row $mainform 1 -newColumn
+	Add-Row $mainform 1 -newColumn
 	$lblLabel5 = Add-FormObject -formObject $mainForm -objectType Label -border
-	$MainForm = Add-Row $mainform 1
+	Add-Row $mainform 1
 	$btnTest2 = Add-FormButton -FormObject $MainForm -buttonText "Test2" -buttonSize "1QLeft"
 	$btnTest3 = Add-FormButton -FormObject $MainForm -buttonText "Test3" -buttonSize "3QRight"
 
@@ -228,7 +235,3 @@ write-host $cboSampleText23
 
 
 
-function Test {
-	$lblLabel5.Text = $cboSampleText23.selectedItem.text
-
-}
